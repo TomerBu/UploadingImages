@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "648723534643",
+    "firebase_url": "https://imageshare-d78dd.firebaseio.com",
+    "project_id": "imageshare-d78dd",
+    "storage_bucket": "imageshare-d78dd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:648723534643:android:8423d9b99dd66f1e",
+        "android_client_info": {
+          "package_name": "tomerbu.edu.uploadingimages"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "648723534643-68qr8ocpik30a4iu19fjbb0n389r7mct.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "tomerbu.edu.uploadingimages",
+            "certificate_hash": "7A10AD770C6F4EC3BE4D27DFCD880B8519D9D87D"
+          }
+        },
+        {
+          "client_id": "648723534643-keuih29vbfm1b7ggl1a5vbojh9fhqs0c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBAHcoDpwI4Vx86ysCNtHrIyyJEKbtl3zU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "648723534643-keuih29vbfm1b7ggl1a5vbojh9fhqs0c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
