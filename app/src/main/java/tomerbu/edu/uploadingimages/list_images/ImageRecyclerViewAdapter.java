@@ -27,19 +27,21 @@ import tomerbu.edu.uploadingimages.models.Image;
 
 public class ImageRecyclerViewAdapter extends RecyclerView.Adapter<ImageRecyclerViewAdapter.ViewHolder> {
 
-    private final List<String> imageList;
+    // private final List<String> imageList;
     private final Context mContext;
-    private final FirebaseUser currentUser;
+    private FirebaseUser currentUser;
 
 
     public ImageRecyclerViewAdapter(Context context) {
         mContext = context;
-        imageList = new ArrayList<>();
+        // imageList = new ArrayList<>();
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
         assert currentUser != null;
         String uid = currentUser.getUid();
+        load();
+    }
 
-        FirebaseDatabase.getInstance().getReference().child(uid).child("Images").addValueEventListener(new ValueEventListener() {
+/*        FirebaseDatabase.getInstance().getReference().child(uid).child("Images").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Iterable<DataSnapshot> children = dataSnapshot.getChildren();
@@ -53,14 +55,63 @@ public class ImageRecyclerViewAdapter extends RecyclerView.Adapter<ImageRecycler
                         notifyDataSetChanged();
                     }
                 }
-                Toast.makeText(mContext, "done", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
             }
         });
+    }*/
+
+    ArrayList<DataSnapshot> imagesList = new ArrayList<>();
+
+    int indexForKey(String key) {
+        for (int i = 0; i < imagesList.size(); i++) {
+            if (imagesList.get(i).getKey().equals(key))
+                return i;
+        }
+        throw new IllegalArgumentException("Key not found");
     }
+
+    void load() {
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        assert currentUser != null;
+        String uid = currentUser.getUid();
+
+
+        FirebaseDatabase.getInstance().getReference().child(uid).child("Images").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
+                imagesList.add(dataSnapshot);
+                notifyItemInserted(imagesList.size() - 1);
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String previousChildName) {
+                int idx = indexForKey(dataSnapshot.getKey());
+                imagesList.set(idx, dataSnapshot);
+                notifyItemChanged(idx);
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                int idx = indexForKey(dataSnapshot.getKey());
+                imagesList.remove(idx);
+                notifyItemRemoved(idx);
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -71,7 +122,7 @@ public class ImageRecyclerViewAdapter extends RecyclerView.Adapter<ImageRecycler
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.uri = imageList.get(position);
+        holder.uri = imagesList.get(position).getValue(Image.class).getUri();
         Picasso.with(mContext).load(holder.uri).into(holder.ivImage);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
@@ -88,7 +139,6 @@ public class ImageRecyclerViewAdapter extends RecyclerView.Adapter<ImageRecycler
 
     }
 
-    int lastPosition = -1;
 
     /**
      * Here is the key method to apply the animation
@@ -121,7 +171,7 @@ public class ImageRecyclerViewAdapter extends RecyclerView.Adapter<ImageRecycler
 
     @Override
     public int getItemCount() {
-        return imageList.size();
+        return imagesList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

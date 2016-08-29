@@ -196,7 +196,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void persistImage(String downloadUrl) {
         Image i = new Image(downloadUrl);
+        ivCapture.animate().rotation(360);
         FirebaseDatabase.getInstance().getReference().child(currentUser.getUid()).child("Images").push().setValue(i);
-        Picasso.with(this).load(downloadUrl).into(ivCapture);
+        Picasso.with(this).load(downloadUrl).placeholder(R.drawable.common_ic_googleplayservices).into(ivCapture);
     }
 }
