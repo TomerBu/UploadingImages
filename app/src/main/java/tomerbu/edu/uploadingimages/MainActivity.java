@@ -12,6 +12,8 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -33,7 +35,9 @@ import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 
+import tomerbu.edu.uploadingimages.list_images.ImageRecyclerViewAdapter;
 import tomerbu.edu.uploadingimages.list_images.ImagesFragment;
 import tomerbu.edu.uploadingimages.models.Image;
 
@@ -84,6 +88,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initUI() {
+        RecyclerView rv = (RecyclerView) findViewById(R.id.galleryRecycler);
+        rv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        rv.setAdapter(new ImageRecyclerViewAdapter(this));
     }
 
     @Override
@@ -126,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
-            File f = File.createTempFile("temp", "jpg", storageDir);
+            File f = File.createTempFile("temp" + new Date().getTime(), "jpg", storageDir);
 
             photoURI = FileProvider.getUriForFile(this,
                     "tomerbu.edu.uploadingimages.fileprovider",
@@ -164,7 +171,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     Toast.makeText(MainActivity.this, "Done!", Toast.LENGTH_SHORT).show();
 
-                    FirebaseStorage.getInstance().getReferenceFromUrl(sBucket).child("images").child(photoURI.getLastPathSegment()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    sRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {
                             persistImage(uri.toString());

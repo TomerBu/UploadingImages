@@ -13,8 +13,22 @@
     tools:showIn="@layout/activity_main">
 
     <ImageView
+        android:id="@+id/ivCapture"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/ivCapture"
         android:text="Hello World!" />
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_margin="10dp"
+        android:layout_below="@+id/ivCapture"
+        android:layout_height="wrap_content">
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/galleryRecycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+     />
+    </android.support.v7.widget.CardView>
 </RelativeLayout>
