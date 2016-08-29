@@ -3,6 +3,7 @@ package tomerbu.edu.uploadingimages;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -19,7 +20,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.BounceInterpolator;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -37,6 +42,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 
+import mehdi.sakout.fancybuttons.FancyButton;
 import tomerbu.edu.uploadingimages.list_images.ImageRecyclerViewAdapter;
 import tomerbu.edu.uploadingimages.list_images.ImagesFragment;
 import tomerbu.edu.uploadingimages.models.Image;
@@ -50,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
     private Uri photoURI;
     private final static String TAG = "TomerBu";
     private ImageView ivCapture;
+    private Typeface typeface;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +68,8 @@ public class MainActivity extends AppCompatActivity {
         fab = (FloatingActionButton) findViewById(R.id.fab);
 
         loginWithFirebase();
-
+        typeface = Typeface.createFromAsset(getAssets(), "fonts/AKITRG__.TTF");
+        fonts(getWindow().getDecorView());
     }
 
     private void loginWithFirebase() {
@@ -87,10 +95,44 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+
+    private void fonts(View view) {
+        if (view instanceof ViewGroup) {
+            ViewGroup viewGroup = (ViewGroup) view;
+            for (int i = 0; i < viewGroup.getChildCount(); i++) {
+                View child = viewGroup.getChildAt(i);
+                fonts(child);
+            }
+        } else if (view instanceof TextView) {
+            TextView tv = (TextView) view;
+            tv.setTypeface(typeface);
+        }
+
+        if (view instanceof FancyButton) {
+            FancyButton fb = (FancyButton) view;
+            fb.setCustomIconFont("fa.ttf");
+
+        }
+
+    }
+
     private void initUI() {
         RecyclerView rv = (RecyclerView) findViewById(R.id.galleryRecycler);
         rv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         rv.setAdapter(new ImageRecyclerViewAdapter(this));
+
+
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+
+        View layout = findViewById(R.id.rvWelcome);
+        if (layout != null) {
+            layout.setTranslationY(-1000);
+            layout.animate().translationYBy(1000).setStartDelay(1000).setDuration(600).setInterpolator(new BounceInterpolator());
+        }
     }
 
     @Override
@@ -199,5 +241,11 @@ public class MainActivity extends AppCompatActivity {
         ivCapture.animate().rotation(360);
         FirebaseDatabase.getInstance().getReference().child(currentUser.getUid()).child("Images").push().setValue(i);
         Picasso.with(this).load(downloadUrl).placeholder(R.drawable.common_ic_googleplayservices).into(ivCapture);
+    }
+
+    public void dismissWelcome(View view) {
+        RelativeLayout rvWelcome = (RelativeLayout) findViewById(R.id.rvWelcome);
+        RelativeLayout parent = (RelativeLayout) rvWelcome.getParent();
+        parent.removeView(rvWelcome);
     }
 }

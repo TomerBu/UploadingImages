@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fancy="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clipChildren="false"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -12,6 +14,7 @@
     tools:context="tomerbu.edu.uploadingimages.MainActivity"
     tools:showIn="@layout/activity_main">
 
+
     <android.support.v7.widget.CardView
         android:id="@+id/cardImageCapture"
         android:layout_width="match_parent"
@@ -19,15 +22,14 @@
         android:layout_margin="10dp">
 
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
+        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/ivCapture"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            app:civ_border_width="1dp"
             android:elevation="20dp"
-            app:civ_border_color="#ddd"/>
+            app:civ_border_color="#ddd"
+            app:civ_border_width="1dp" />
 
     </android.support.v7.widget.CardView>
 
@@ -43,4 +45,54 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </android.support.v7.widget.CardView>
+
+    <RelativeLayout
+        android:id="@+id/rvWelcome"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#33eeeeee"
+        android:translationZ="100dp">
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="50dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="30dp"
+                android:text="@string/lorem" />
+        </android.support.v4.widget.NestedScrollView>
+
+
+
+        <mehdi.sakout.fancybuttons.FancyButton
+            android:id="@+id/btn_spotify"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:onClick="dismissWelcome"
+
+            android:paddingBottom="10dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:paddingTop="10dp"
+            fancy:fb_borderColor="#FFFFFF"
+            fancy:fb_borderWidth="1dp"
+            fancy:fb_defaultColor="#7ab800"
+            fancy:fb_focusColor="#9bd823"
+            fancy:fb_fontIconResource="&#xf04b;"
+            fancy:fb_iconPosition="left"
+            fancy:fb_radius="30dp"
+            fancy:fb_text="Got It"
+
+            fancy:fb_textColor="#FFFFFF" />
+
+
+    </RelativeLayout>
+
+
 </RelativeLayout>
