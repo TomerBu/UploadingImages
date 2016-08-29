@@ -15,7 +15,6 @@ import tomerbu.edu.uploadingimages.R;
 public class ImagesFragment extends DialogFragment {
 
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,8 +30,7 @@ public class ImagesFragment extends DialogFragment {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
 
-                recyclerView.setLayoutManager(new GridLayoutManager(context, 3));
-
+            recyclerView.setLayoutManager(new GridLayoutManager(context, 3));
             recyclerView.setAdapter(new ImageRecyclerViewAdapter(getContext()));
         }
         return view;
